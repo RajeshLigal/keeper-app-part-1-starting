@@ -27,6 +27,14 @@ function App() {
     event.preventDefault();
   }
 
+  function deleteItem(id) {
+    setPostContent((prevItems) => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
+
   return (
     <div>
       <Header />
@@ -36,8 +44,14 @@ function App() {
         inputChange={handleChange}
         submit={handleClick}
       />
-      {postContent.map((noteItem) => (
-        <Note key={1} title={noteItem.title} content={noteItem.content} />
+      {postContent.map((noteItem, index) => (
+        <Note
+          key={index}
+          id={index}
+          title={noteItem.title}
+          content={noteItem.content}
+          delete={deleteItem}
+        />
       ))}
       <Footer />
     </div>
