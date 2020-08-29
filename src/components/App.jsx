@@ -5,35 +5,17 @@ import Note from "./Note";
 import CreateArea from "./CreateArea";
 
 function App() {
-  const [inputText, setInputText] = useState({
-    title: "",
-    content: "",
-  });
-  const [postContent, setPostContent] = useState([]);
+  const [notes, setNotes] = useState([]);
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setInputText((preValue) => {
-      return { ...preValue, [name]: value };
+  function addNote(newNote) {
+    setNotes((prevNotes) => {
+      return [...prevNotes, newNote];
     });
   }
 
-  function handleClick(event) {
-    setPostContent((prevItems) => {
-      return [...prevItems, inputText];
-    });
-    //needed to both object set to null to work properly
-    setInputText({
-      title: "",
-      content: "",
-    });
-    event.preventDefault();
-  }
-
-  function deleteItem(id) {
-    setPostContent((prevItems) => {
-      return prevItems.filter((item, index) => {
+  function deleteNote(id) {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((noteItem, index) => {
         return index !== id;
       });
     });
@@ -42,21 +24,18 @@ function App() {
   return (
     <div>
       <Header />
-      <CreateArea
-        title={inputText.title}
-        content={inputText.content}
-        inputChange={handleChange}
-        submit={handleClick}
-      />
-      {postContent.map((noteItem, index) => (
-        <Note
-          key={index}
-          id={index}
-          title={noteItem.title}
-          content={noteItem.content}
-          delete={deleteItem}
-        />
-      ))}
+      <CreateArea onAdd={addNote} />
+      {notes.map((noteItem, index) => {
+        return (
+          <Note
+            key={index}
+            id={index}
+            title={noteItem.title}
+            content={noteItem.content}
+            onDelete={deleteNote}
+          />
+        );
+      })}
       <Footer />
     </div>
   );
