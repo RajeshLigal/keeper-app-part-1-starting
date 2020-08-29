@@ -23,7 +23,11 @@ function App() {
     setPostContent((prevItems) => {
       return [...prevItems, inputText];
     });
-    setInputText("");
+    //needed to both object set to null to work properly
+    setInputText({
+      title: "",
+      content: "",
+    });
     event.preventDefault();
   }
 
